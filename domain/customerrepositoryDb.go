@@ -2,7 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 	"time"
 
@@ -14,15 +13,15 @@ type CustomerRepositoryDb struct {
 	client *sql.DB
 }
 
-func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
+func (d CustomerRepositoryDb) FindAll() ([]Customer, *errs.AppError) {
 	findAllSQL := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
 	rows, err := d.client.Query(findAllSQL)
 	if err != nil {
 		if err == sql.ErrNoRows {
-			return nil, errors.New("Customer not found")
+			return nil, errs.NewNotFoundError("Customer not found")
 		}
 		log.Println("Error while querying customer table" + err.Error())
-		return nil, errors.New("unexpected database error")
+		return nil, errs.NewUnexpectedError("unexpected database error")
 	}
 	customers := make([]Customer, 0)
 	for rows.Next() {
@@ -30,7 +29,7 @@ func (d CustomerRepositoryDb) FindAll() ([]Customer, error) {
 		err := rows.Scan(&c.ID, &c.Name, &c.City, &c.DateofBirth, &c.Zipcode, &c.Status)
 		if err != nil {
 			log.Println("Error while Scanning Customers" + err.Error())
-			return nil, err
+			return nil, errs.NewUnexpectedError("error while scanning customers")
 		}
 		customers = append(customers, c)
 	}
