@@ -2,12 +2,13 @@ package service
 
 import (
 	"github.com/jeffleon/banking-hexarch/domain"
+	"github.com/jeffleon/banking-hexarch/dto"
 	"github.com/jeffleon/banking-hexarch/errs"
 )
 
 type CustomerService interface {
 	GetAllCustomers(string) ([]domain.Customer, *errs.AppError)
-	GetCustomer(string) (*domain.Customer, *errs.AppError)
+	GetCustomer(string) (*dto.CustomerResponse, *errs.AppError)
 }
 
 type DefaultCustomerService struct {
@@ -25,8 +26,13 @@ func (s DefaultCustomerService) GetAllCustomers(status string) ([]domain.Custome
 	return s.repo.FindAll(status)
 }
 
-func (s DefaultCustomerService) GetCustomer(id string) (*domain.Customer, *errs.AppError) {
-	return s.repo.ByID(id)
+func (s DefaultCustomerService) GetCustomer(id string) (*dto.CustomerResponse, *errs.AppError) {
+	customer, err := s.repo.ByID(id)
+	if err != nil {
+		return nil, err
+	}
+	response := customer.ToDto()
+	return &response, nil
 }
 
 func NewCustomerService(repository domain.CustomerRepository) DefaultCustomerService {
