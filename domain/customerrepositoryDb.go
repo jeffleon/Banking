@@ -2,6 +2,7 @@ package domain
 
 import (
 	"database/sql"
+	"errors"
 	"log"
 	"time"
 
@@ -13,9 +14,8 @@ type CustomerRepositoryDb struct {
 	client *sql.DB
 }
 
-func (d CustomerRepositoryDb) FindAll() ([]Customer, *errs.AppError) {
-	findAllSQL := "select customer_id, name, city, zipcode, date_of_birth, status from customers"
-	rows, err := d.client.Query(findAllSQL)
+func (d CustomerRepositoryDb) FindAll(status string) ([]Customer, *errs.AppError) {
+	rows, err := QueryBuilderAllcustomers(status, d)
 	if err != nil {
 		if err == sql.ErrNoRows {
 			return nil, errs.NewNotFoundError("Customer not found")
@@ -49,6 +49,27 @@ func (d CustomerRepositoryDb) ByID(id string) (*Customer, *errs.AppError) {
 		return nil, errs.NewUnexpectedError("unexpected database error")
 	}
 	return &c, nil
+}
+
+func QueryBuilderAllcustomers(status string, d CustomerRepositoryDb) (*sql.Rows, error) {
+	var findAllSQL string
+	var rows *sql.Rows
+	var err error
+	if status == "" {
+		findAllSQL = "select customer_id, name, city, zipcode, date_of_birth, status from customers"
+		rows, err = d.client.Query(findAllSQL)
+	} else {
+		findAllSQL = "select customer_id, name, city, zipcode, date_of_birth, status from customers where status=?"
+		if status == "active" {
+			status = "1"
+		} else if status == "inactive" {
+			status = "0"
+		} else {
+			return nil, errors.New("unexpected status")
+		}
+		rows, err = d.client.Query(findAllSQL, status)
+	}
+	return rows, err
 }
 
 func NewCustomerRepositoryDB() CustomerRepositoryDb {
