@@ -2,9 +2,6 @@ package domain
 
 import (
 	"database/sql"
-	"fmt"
-	"os"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql" //driver
 	"github.com/jeffleon/banking-hexarch/errs"
@@ -56,20 +53,6 @@ func QueryBuilderAllcustomers(status string, d CustomerRepositoryDb) ([]Customer
 	return customers, err
 }
 
-func NewCustomerRepositoryDB() CustomerRepositoryDb {
-	dbUser := os.Getenv("DB_USER")
-	dbPasswd := os.Getenv("DB_PASSWORD")
-	dbAddr := os.Getenv("DB_ADDR")
-	dbPort := os.Getenv("DB_PORT")
-	dbName := os.Getenv("DB_NAME")
-	dataSource := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", dbUser, dbPasswd, dbAddr, dbPort, dbName)
-	client, err := sqlx.Open("mysql", dataSource)
-	// client, err := sqlx.Open("mysql", "root:secret@tcp(localhost:3306)/banking")
-	if err != nil {
-		panic(err)
-	}
-	client.SetConnMaxLifetime(time.Minute * 3)
-	client.SetMaxOpenConns(10)
-	client.SetMaxIdleConns(10)
+func NewCustomerRepositoryDB(client *sqlx.DB) CustomerRepositoryDb {
 	return CustomerRepositoryDb{client}
 }
