@@ -8,12 +8,6 @@ import (
 	"github.com/jeffleon/banking-hexarch/service"
 )
 
-type Customer struct {
-	Name    string `json:"full_name" xml:"name"`
-	City    string `json:"city" xml:"city"`
-	Zipcode string `json:"zip_code" xml:"zipcode"`
-}
-
 type CustomerHandler struct {
 	service service.CustomerService
 }

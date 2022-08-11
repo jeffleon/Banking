@@ -26,21 +26,26 @@ func Start() {
 	address := os.Getenv("SERVER_ADDRESS")
 	port := os.Getenv("SERVER_PORT")
 	dbClient := getDbClient()
-	//define customer routes
+	// Repositories
 	customerRepositoryDb := domain.NewCustomerRepositoryDB(dbClient)
+	accountsRepositoryDb := domain.NewAccountRepositoryDb(dbClient)
+	// Services
 	customerService := service.NewCustomerService(customerRepositoryDb)
+	accountService := service.NewAccountService(accountsRepositoryDb)
+	// Handlers
 	ch := CustomerHandler{service: customerService}
+	ah := AccountHandler{service: accountService}
+	//Routes
 	router.HandleFunc("/customers", ch.getAllCustomers).Methods(http.MethodGet)
 	router.HandleFunc("/customer/{customer_id:[0-9]+}", ch.getCustomer).Methods(http.MethodGet)
-	// define account routes
-	// accountsRepositoryDb := domain.NewAccountRepositoryDb(dbClient)
+	router.HandleFunc("/customer/{customer_id:[0-9]+}/account", ah.NewAccount).Methods(http.MethodPost)
 	//starting server
 	log.Fatal(http.ListenAndServe(fmt.Sprintf("%s:%s", address, port), router))
 }
 
 func getDbClient() *sqlx.DB {
 	dbUser := os.Getenv("DB_USER")
-	dbPasswd := os.Getenv("DB_PASSWORD")
+	dbPasswd := os.Getenv("DB_PASSWD")
 	dbAddr := os.Getenv("DB_ADDR")
 	dbPort := os.Getenv("DB_PORT")
 	dbName := os.Getenv("DB_NAME")

@@ -1,6 +1,9 @@
 package domain
 
-import "github.com/jeffleon/banking-hexarch/errs"
+import (
+	"github.com/jeffleon/banking-hexarch/dto"
+	"github.com/jeffleon/banking-hexarch/errs"
+)
 
 type Account struct {
 	AccountID   string
@@ -9,6 +12,10 @@ type Account struct {
 	AccountType string
 	Amount      float64
 	Status      string
+}
+
+func (a Account) ToNewAccountResponseDto() dto.NewAccountResponse {
+	return dto.NewAccountResponse{AccountID: a.AccountID}
 }
 
 type AccountRepository interface {
