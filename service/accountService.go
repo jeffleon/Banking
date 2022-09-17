@@ -1,8 +1,6 @@
 package service
 
 import (
-	"time"
-
 	"github.com/jeffleon/banking-hexarch/domain"
 	"github.com/jeffleon/banking-hexarch/dto"
 	"github.com/jeffleon/banking-hexarch/errs"
@@ -16,6 +14,8 @@ type DefaultAccountService struct {
 	repo domain.AccountRepository
 }
 
+const dbTSLayout = "2006-01-02 15:04:05"
+
 func (s DefaultAccountService) NewAccount(req dto.NewAccountRequest) (*dto.NewAccountResponse, *errs.AppError) {
 	if err := req.Validate(); err != nil {
 		return nil, err
@@ -23,7 +23,7 @@ func (s DefaultAccountService) NewAccount(req dto.NewAccountRequest) (*dto.NewAc
 	a := domain.Account{
 		AccountID:   "",
 		CustomerID:  req.CustomerID,
-		OpeningDate: time.Now().Format("2006-01-02 15:04:04"),
+		OpeningDate: dbTSLayout,
 		AccountType: req.AccountType,
 		Amount:      req.Amount,
 		Status:      "1",

@@ -6,6 +6,7 @@ import (
 	"github.com/jeffleon/banking-hexarch/errs"
 )
 
+//go:generate mockgen -destination=../mocks/service/mockCustomerService.go -package=service github.com/jeffleon/banking-hexarch/service CustomerService
 type CustomerService interface {
 	GetAllCustomers(string) ([]domain.Customer, *errs.AppError)
 	GetCustomer(string) (*dto.CustomerResponse, *errs.AppError)
