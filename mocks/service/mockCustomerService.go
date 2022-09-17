@@ -10,7 +10,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	domain "github.com/jeffleon/banking-hexarch/domain"
 	dto "github.com/jeffleon/banking-hexarch/dto"
-	errs "github.com/jeffleon/banking-hexarch/errs"
+	errs "github.com/jeffleon/banking-lib/errs"
 )
 
 // MockCustomerService is a mock of CustomerService interface.

@@ -8,8 +8,8 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/gorilla/mux"
 	"github.com/jeffleon/banking-hexarch/domain"
-	"github.com/jeffleon/banking-hexarch/errs"
 	"github.com/jeffleon/banking-hexarch/mocks/service"
+	"github.com/jeffleon/banking-lib/errs"
 )
 
 var router *mux.Router

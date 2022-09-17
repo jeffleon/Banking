@@ -3,7 +3,7 @@ package dto
 import (
 	"strings"
 
-	"github.com/jeffleon/banking-hexarch/errs"
+	"github.com/jeffleon/banking-lib/errs"
 )
 
 type NewAccountRequest struct {

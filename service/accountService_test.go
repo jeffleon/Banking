@@ -6,8 +6,8 @@ import (
 	"github.com/golang/mock/gomock"
 	realdomain "github.com/jeffleon/banking-hexarch/domain"
 	"github.com/jeffleon/banking-hexarch/dto"
-	"github.com/jeffleon/banking-hexarch/errs"
 	"github.com/jeffleon/banking-hexarch/mocks/domain"
+	"github.com/jeffleon/banking-lib/errs"
 )
 
 func Test_should_return_a_validation_error_response_when_the_request_is_not_validate(t *testing.T) {

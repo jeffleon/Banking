@@ -3,7 +3,7 @@ package service
 import (
 	"github.com/jeffleon/banking-hexarch/domain"
 	"github.com/jeffleon/banking-hexarch/dto"
-	"github.com/jeffleon/banking-hexarch/errs"
+	"github.com/jeffleon/banking-lib/errs"
 )
 
 //go:generate mockgen -destination=../mocks/service/mockCustomerService.go -package=service github.com/jeffleon/banking-hexarch/service CustomerService

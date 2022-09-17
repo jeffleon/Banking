@@ -2,7 +2,7 @@ package domain
 
 import (
 	"github.com/jeffleon/banking-hexarch/dto"
-	"github.com/jeffleon/banking-hexarch/errs"
+	"github.com/jeffleon/banking-lib/errs"
 )
 
 type Account struct {

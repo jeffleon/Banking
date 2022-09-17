@@ -4,8 +4,8 @@ import (
 	"database/sql"
 
 	_ "github.com/go-sql-driver/mysql" //driver
-	"github.com/jeffleon/banking-hexarch/errs"
-	"github.com/jeffleon/banking-hexarch/logger"
+	"github.com/jeffleon/banking-lib/errs"
+	"github.com/jeffleon/banking-lib/logger"
 	"github.com/jmoiron/sqlx"
 )
 
